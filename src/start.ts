@@ -1,3 +1,19 @@
-console.log('hello from start')
+import { EOL } from 'os'
+import { runCli } from './cli/runCli'
 
-export const a = 5
+export const main = async (argv: string[]) => {
+  try {
+    // const resultStatus = await runCli(runCliDependencies, argv);
+    const resultStatus = await runCli(argv)
+
+    // processLogger.info.close();
+
+    if (resultStatus !== 0) {
+      process.exitCode = 1
+    }
+  } catch (error) {
+    // process.s.info.close();
+    process.stdout.write(`Error in installing: ${error.stack}${EOL}`)
+    process.exitCode = 1
+  }
+}
