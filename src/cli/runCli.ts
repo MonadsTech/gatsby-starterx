@@ -1,4 +1,3 @@
-import chalk from 'chalk'
 import { Command } from 'commander'
 import { EOL } from 'os'
 import { version } from '../../package.json'
@@ -6,6 +5,7 @@ import { version } from '../../package.json'
 import { ResultStatus } from '../types'
 import { installGatsbyInit } from './install-gatsby'
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const runCli = async (rawArgv: string[]) => {
   const command = new Command()
     .storeOptionsAsProperties(false)

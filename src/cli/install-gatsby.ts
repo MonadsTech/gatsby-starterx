@@ -1,27 +1,31 @@
 import chalk from 'chalk'
 import cp from 'child_process'
-import path from 'path'
 import clear from 'clear'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
 const starterList = {
-    basic : {
-        key: 'basic',
-        label: 'Gatsby Hello World',
-        url : 'https://github.com/gatsbyjs/gatsby-starter-hello-world'
-    },
-    gcn: {
-        key:'gcn',
-        label: 'Contentful Starter',
-        url:  'https://github.com/ryanwiemer/gatsby-starter-gcn.git'
-    }
+  basic: {
+    key: 'basic',
+    label: 'Gatsby Hello World',
+    url: 'https://github.com/gatsbyjs/gatsby-starter-hello-world',
+  },
+  gcn: {
+    key: 'gcn',
+    label: 'Contentful Starter',
+    url: 'https://github.com/ryanwiemer/gatsby-starter-gcn.git',
+  },
 }
-type StarterTypeKeys = keyof typeof starterList;
+type StarterTypeKeys = keyof typeof starterList
 
-const starterTypes = Object.values(starterList);
-const startersForInquirer = starterTypes.map(s => ({name: s.label, value: s.key, short: s.key}));
+const starterTypes = Object.values(starterList)
+const startersForInquirer = starterTypes.map((s) => ({
+  name: s.label,
+  value: s.key,
+  short: s.key,
+}))
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const installGatsbyInit = async () => {
   clear()
   console.log(
@@ -39,11 +43,11 @@ export const installGatsbyInit = async () => {
         default: 'hello-world',
       },
       {
-          type:'list',
-          name: 'type',
-          message: 'Choose Starter Template',
-          choices: startersForInquirer,
-      }
+        type: 'list',
+        name: 'type',
+        message: 'Choose Starter Template',
+        choices: startersForInquirer,
+      },
     ])
     .catch((error) => {
       if (error.isTtyError) {
@@ -53,14 +57,13 @@ export const installGatsbyInit = async () => {
       }
     })
 
-    const projectName  = answers.name;
-    const starterType = answers.type as StarterTypeKeys;
-  
-    const commandStr = `npx gatsby new '${projectName}' ${starterList[starterType].url}`
-     
-    await cp.execSync(commandStr, {
-        // cwd: rootDir,
-        stdio: 'inherit',
-    })
+  const projectName = answers.name
+  const starterType = answers.type as StarterTypeKeys
 
+  const commandStr = `npx gatsby new '${projectName}' ${starterList[starterType].url}`
+
+  await cp.execSync(commandStr, {
+    // cwd: rootDir,
+    stdio: 'inherit',
+  })
 }
