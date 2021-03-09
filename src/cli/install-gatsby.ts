@@ -2,6 +2,8 @@ import chalk from 'chalk'
 import clear from 'clear'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
+import path from 'path'
+import { existsSync } from 'fs'
 import { StarterAvailable, starterList } from './gatsby-starters/starters'
 
 const starterTypes = Object.values(starterList)
@@ -25,8 +27,11 @@ export const installGatsbyInit = async () => {
       {
         type: 'input',
         name: 'name',
-        message: 'Name of gatsby project',
+        message: 'Name of Gatsby project',
         default: 'hello-world',
+        validate: (name) =>
+          !existsSync(path.resolve('./', name)) ||
+          'Folder exists. please choose other name',
       },
       {
         type: 'list',
