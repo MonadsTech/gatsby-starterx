@@ -11,9 +11,21 @@ export const gcnStarterSetup = async (
 ): Promise<void> => {
   const { projectName, starter } = config
 
-  const commandStr = `git clone ${starter.url} '${projectName}'`
+  renderInstructions()
 
-  cp.execSync(commandStr, {
+  const configFilePath = path.resolve(
+    './',
+    projectName,
+    '.contentful.json'
+  )
+
+  const contentfulSetup = await inquirer
+    .prompt(questions)
+    .catch((error) => console.error(error))
+
+
+  const gitCloneCommandStr = `git clone ${starter.url} '${projectName}'`
+  cp.execSync(gitCloneCommandStr, {
     // cwd: rootDir,
     stdio: 'inherit',
   })
@@ -22,33 +34,30 @@ export const gcnStarterSetup = async (
     stdio: 'inherit',
   })
 
-  renderInstructions()
+  const {
+    spaceId,
+    accessToken,
+    previewToken,
+    managementToken,
+  } = contentfulSetup as {
+    spaceId: string
+    accessToken: string
+    previewToken: string
+    managementToken: string
+  }
 
-  const configFilePath = path.resolve(
-    __dirname,
-    projectName,
-    '.contentful.json'
+  await setupContentful({
+    spaceId,
+    accessToken,
+    previewToken,
+    managementToken,
+    configFilePath,
+  })
+  console.log(
+    `All set! You can now run ${chalk.yellow(
+      'gatsby develop'
+    )} to see it in action.`
   )
-
-  inquirer
-    .prompt(questions)
-    .then(({ spaceId, accessToken, previewToken, managementToken }) => {
-      return setupContentful({
-        spaceId,
-        accessToken,
-        previewToken,
-        managementToken,
-        configFilePath,
-      })
-    })
-    .then(() => {
-      console.log(
-        `All set! You can now run ${chalk.yellow(
-          'gatsby develop'
-        )} to see it in action.`
-      )
-    })
-    .catch((error) => console.error(error))
 
   // cp.execSync(`cd ${config.projectName} && yarn setup`, {
   //   stdio: 'inherit',
