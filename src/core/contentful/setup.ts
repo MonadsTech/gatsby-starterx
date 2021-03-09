@@ -1,7 +1,5 @@
-// Setup modified from https://github.com/contentful-userland/gatsby-contentful-starter
-
 import spaceImport from 'contentful-import'
-import exportFile from './export.json'
+import exportFile from './contentfulSchema.json'
 import chalk from 'chalk'
 import { writeFileSync } from 'fs'
 
