@@ -1,11 +1,11 @@
 {
   "name": "@monadstech/gatsby-starterx",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Booster for gatsby starter app",
   "keywords": [
     "gatsby",
     "create",
-    "app",
+    "starter",
     "cli"
   ],
   "author": "Pankaj Vaghela <vpankaj1998official@gmail.com>",
@@ -16,6 +16,7 @@
   "files": [
     "lib"
   ],
+  "private": false,
   "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
@@ -30,6 +31,11 @@
     "local": "npm i -g && gatsby-starterx",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "https://github.com/MonadsTech/gatsby-starterx#readme",
+  "repository": {
+    "type": "git",
+    "url": "github:MonadsTech/gatsby-starterx"
   },
   "husky": {
     "hooks": {
