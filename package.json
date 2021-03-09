@@ -19,7 +19,9 @@
   "private": false,
   "license": "MIT",
   "engines": {
-    "node": ">=6.0.0"
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.17.3",
+    "node": ">= 12.5.0"
   },
   "scripts": {
     "lint": "eslint '*/**/*.{js,ts}' --quiet",

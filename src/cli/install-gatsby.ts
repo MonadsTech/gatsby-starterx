@@ -3,20 +3,7 @@ import cp from 'child_process'
 import clear from 'clear'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
-
-const starterList = {
-  basic: {
-    key: 'basic',
-    label: 'Gatsby Hello World',
-    url: 'https://github.com/gatsbyjs/gatsby-starter-hello-world',
-  },
-  gcn: {
-    key: 'gcn',
-    label: 'Contentful Starter',
-    url: 'https://github.com/ryanwiemer/gatsby-starter-gcn.git',
-  },
-}
-type StarterTypeKeys = keyof typeof starterList
+import { StarterAvailable, starterList } from './gatsby-starters/starters'
 
 const starterTypes = Object.values(starterList)
 const startersForInquirer = starterTypes.map((s) => ({
@@ -57,13 +44,22 @@ export const installGatsbyInit = async () => {
       }
     })
 
-  const projectName = answers.name
-  const starterType = answers.type as StarterTypeKeys
+  const projectName = answers.name as string
+  const starterType = answers.type as StarterAvailable
 
-  const commandStr = `npx gatsby new '${projectName}' ${starterList[starterType].url}`
+  const commandStr = `git clone ${starterList[starterType].url} '${projectName}'`
 
-  await cp.execSync(commandStr, {
+  cp.execSync(commandStr, {
     // cwd: rootDir,
     stdio: 'inherit',
+  })
+
+  cp.execSync(`cd ${projectName} && yarn install`, {
+    stdio: 'inherit',
+  })
+
+  await starterList[starterType].postInstall({
+    projectName,
+    starter: starterList[starterType],
   })
 }
