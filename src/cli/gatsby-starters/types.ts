@@ -1,17 +1,17 @@
+export type StarterAvailable = 'basic' | 'gcn'
 
-export type StarterAvailable = 'basic' | 'gcn';
 export type StarterType<K> = {
-        key: K;
-        label: string;
-        url: string;
-        postInstall: (config: PostInstallConfig) => Promise<void>;
-    }
-
-export type StarterListType =  {
-    [K in StarterAvailable]: StarterType<K>
+  key: K
+  label: string
+  url: string
+  installStarter: (config: InstallStarterConfig) => Promise<void>
 }
 
-export type PostInstallConfig = {
-    projectName: string;
-    starter: StarterListType[StarterAvailable];
+export type StarterListType = {
+  [K in StarterAvailable]: StarterType<K>
+}
+
+export type InstallStarterConfig = {
+  projectName: string
+  starter: StarterListType[StarterAvailable]
 }

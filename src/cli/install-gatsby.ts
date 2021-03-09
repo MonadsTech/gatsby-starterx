@@ -1,5 +1,4 @@
 import chalk from 'chalk'
-import cp from 'child_process'
 import clear from 'clear'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
@@ -47,18 +46,7 @@ export const installGatsbyInit = async () => {
   const projectName = answers.name as string
   const starterType = answers.type as StarterAvailable
 
-  const commandStr = `git clone ${starterList[starterType].url} '${projectName}'`
-
-  cp.execSync(commandStr, {
-    // cwd: rootDir,
-    stdio: 'inherit',
-  })
-
-  cp.execSync(`cd ${projectName} && yarn install`, {
-    stdio: 'inherit',
-  })
-
-  await starterList[starterType].postInstall({
+  await starterList[starterType].installStarter({
     projectName,
     starter: starterList[starterType],
   })
