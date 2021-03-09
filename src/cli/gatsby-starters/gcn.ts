@@ -13,24 +13,15 @@ export const gcnStarterSetup = async (
 
   renderInstructions()
 
-  const configFilePath = path.resolve(
-    './',
-    projectName,
-    '.contentful.json'
-  )
+  const configFilePath = path.resolve('./', projectName, '.contentful.json')
 
   const contentfulSetup = await inquirer
     .prompt(questions)
     .catch((error) => console.error(error))
 
-
   const gitCloneCommandStr = `git clone ${starter.url} '${projectName}'`
   cp.execSync(gitCloneCommandStr, {
     // cwd: rootDir,
-    stdio: 'inherit',
-  })
-
-  cp.execSync(`cd ${projectName} && yarn install`, {
     stdio: 'inherit',
   })
 
@@ -53,6 +44,11 @@ export const gcnStarterSetup = async (
     managementToken,
     configFilePath,
   })
+
+  cp.execSync(`cd ${projectName} && yarn install`, {
+    stdio: 'inherit',
+  })
+
   console.log(
     `All set! You can now run ${chalk.yellow(
       'gatsby develop'
