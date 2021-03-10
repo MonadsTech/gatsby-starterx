@@ -36,7 +36,9 @@ export const installContentfulApp = async (
     console.log(
       `${chalk.red('Failed')}: Unable to install ${
         selectedApp.name
-      } app on contentful`
+      } app on contentful. You can try installing app after setup using ${chalk.yellow(
+        '--cappi'
+      )} option`
     )
   }
 

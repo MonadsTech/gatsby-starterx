@@ -34,17 +34,31 @@ export const gcnStarterSetup = async (
     stdio: 'inherit',
   })
 
-  await setupContentful({
-    spaceId,
-    accessToken,
-    previewToken,
-    managementToken,
-    configFilePath,
-  })
+  try {
+    await setupContentful({
+      spaceId,
+      accessToken,
+      previewToken,
+      managementToken,
+      configFilePath,
+    })
 
-  cp.execSync(`cd ${projectName} && yarn install`, {
-    stdio: 'inherit',
-  })
+    cp.execSync(`cd ${projectName} && yarn install`, {
+      stdio: 'inherit',
+    })
+  } catch (e) {
+    console.log(
+      `Failed! Project ${chalk.yellow(projectName)} to setup. ${chalk.red(
+        e.message
+      )}`
+    )
+    console.log(`Cleaning up...`)
+
+    cp.execSync(`rm -rf ./${projectName}`, {
+      stdio: 'inherit',
+    })
+    console.log(`Setup Cleaned. Try again.`)
+  }
 
   console.log(
     `All set! You can now run ${chalk.yellow(
