@@ -3,7 +3,7 @@ import exportFile from './contentfulSchema.json'
 import chalk from 'chalk'
 import { writeFileSync } from 'fs'
 
-type setupContentfulConfigType = {
+type SetupContentfulConfigType = {
   spaceId: string
   accessToken: string
   previewToken: string
@@ -11,17 +11,25 @@ type setupContentfulConfigType = {
   configFilePath: string
 }
 
-export const setupContentful = async (
-  config: setupContentfulConfigType
-): Promise<void> => {
-  const { spaceId, managementToken } = config
+type setupFn = (config: SetupContentfulConfigType) => Promise<void>
 
-  writeConfigFile(config)
+/**
+ * Setups Contentful project
+ * @param config
+ */
 
-  await spaceImport({ spaceId, managementToken, content: exportFile })
+export const setupContentful: setupFn = async (config) => {
+  await writeConfigFile(config)
+
+  await importDataToSpace(config)
 }
 
-export const writeConfigFile = (config: setupContentfulConfigType): void => {
+/**
+ * Writes contentful config (token, spaceId) in file for gatsby site/plugin to use
+ *
+ * @param config
+ */
+export const writeConfigFile: setupFn = async (config) => {
   const { spaceId, accessToken, previewToken, configFilePath } = config
   console.log('Writing config file...')
 
@@ -44,4 +52,15 @@ export const writeConfigFile = (config: setupContentfulConfigType): void => {
     )
   )
   console.log(`Config file ${chalk.yellow(configFilePath)} written`)
+}
+
+/**
+ * Imports data to Contentful Space
+ *
+ * @param config
+ */
+export const importDataToSpace: setupFn = async (config) => {
+  const { spaceId, managementToken } = config
+
+  await spaceImport({ spaceId, managementToken, content: exportFile })
 }

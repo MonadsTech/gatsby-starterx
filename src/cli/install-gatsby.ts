@@ -1,10 +1,13 @@
-import chalk from 'chalk'
+import path from 'path'
 import clear from 'clear'
+import chalk from 'chalk'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
-import path from 'path'
 import { existsSync } from 'fs'
+
+import { CliHandlerFn } from './typesCli'
 import { StarterAvailable, starterList } from './gatsby-starters/starters'
+import { isProjectExists } from '../utils/checkIfDirExists'
 
 const starterTypes = Object.values(starterList)
 const startersForInquirer = starterTypes.map((s) => ({
@@ -13,8 +16,7 @@ const startersForInquirer = starterTypes.map((s) => ({
   short: s.key,
 }))
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const installGatsbyInit = async () => {
+export const installGatsbyInit: CliHandlerFn = async () => {
   clear()
   console.log(
     chalk.green(
@@ -50,6 +52,10 @@ export const installGatsbyInit = async () => {
 
   const projectName = answers.name as string
   const starterType = answers.type as StarterAvailable
+
+  if (isProjectExists(projectName, true)) {
+    return
+  }
 
   await starterList[starterType].installStarter({
     projectName,

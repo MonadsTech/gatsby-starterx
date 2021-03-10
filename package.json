@@ -50,10 +50,13 @@
     ]
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "commander": "^7.1.0",
+    "contentful-clean-space": "^0.7.4",
     "contentful-import": "^7.9.40",
+    "contentful-management": "^7.9.0",
     "figlet": "^1.5.0",
     "inquirer": "^8.0.0",
     "path": "^0.12.7",

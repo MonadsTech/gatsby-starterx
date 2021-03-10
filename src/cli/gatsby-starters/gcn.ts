@@ -3,6 +3,7 @@ import cp from 'child_process'
 import inquirer from 'inquirer'
 import path from 'path'
 import { setupContentful } from '../../core/contentful/setup'
+import { contentfulAppInstallHandler } from '../contentful/appInstall'
 
 import { InstallStarterConfig } from './types'
 
@@ -15,27 +16,23 @@ export const gcnStarterSetup = async (
 
   const configFilePath = path.resolve('./', projectName, '.contentful.json')
 
-  const contentfulSetup = await inquirer
+  const contentfulSetup: ContentfulSpaceAnswersType = await inquirer
     .prompt(questions)
     .catch((error) => console.error(error))
-
-  const gitCloneCommandStr = `git clone ${starter.url} '${projectName}'`
-  cp.execSync(gitCloneCommandStr, {
-    // cwd: rootDir,
-    stdio: 'inherit',
-  })
 
   const {
     spaceId,
     accessToken,
     previewToken,
     managementToken,
-  } = contentfulSetup as {
-    spaceId: string
-    accessToken: string
-    previewToken: string
-    managementToken: string
-  }
+  } = contentfulSetup
+
+  await contentfulAppInstallHandler({ spaceId, managementToken })
+
+  cp.execSync(`git clone ${starter.url} '${projectName}'`, {
+    // cwd: rootDir,
+    stdio: 'inherit',
+  })
 
   await setupContentful({
     spaceId,
@@ -81,6 +78,13 @@ const questions = [
     message: 'Your Content Management API access token',
   },
 ]
+
+type ContentfulSpaceAnswersType = {
+  managementToken: string
+  previewToken: string
+  accessToken: string
+  spaceId: string
+}
 
 const renderInstructions = () => {
   console.log(`
