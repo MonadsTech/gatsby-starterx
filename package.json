@@ -1,6 +1,6 @@
 {
   "name": "@monadstech/gatsby-starterx",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Booster for gatsby starter app",
   "keywords": [
     "gatsby",
@@ -10,6 +10,7 @@
   ],
   "author": "Pankaj Vaghela <vpankaj1998official@gmail.com>",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "bin": {
     "gatsby-starterx": "lib/index.js"
   },
@@ -28,11 +29,16 @@
     "lint:fix": "npm run lint -- --fix",
     "cli:test": "node dist/cli",
     "dev": "tsc --build src --watch",
-    "build": "tsc -p .",
+    "build": "tsc -p ./src",
     "create": "npm run build && npm run test",
     "local": "npm i -g && gatsby-starterx",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
+    "prepare" : "npm run build",
+    "preversion" : "npm run lint",
+    "version" : "npm run lint:fix && git add -A src",
+    "postversion" : "git push && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "homepage": "https://github.com/MonadsTech/gatsby-starterx#readme",
   "repository": {
